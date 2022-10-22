@@ -11,7 +11,7 @@ try:
         config = json.load(jsonfile)
     loglevel = getattr(logging, config['logLevel'].upper(), None)
     logging.basicConfig(level=loglevel)
-    logging.info("Read config successfuly")
+    logging.info("Read config successfully")
 except:
     logging.critical("Could not load config.json")
     sys.exit()
@@ -19,7 +19,7 @@ except:
 intents = discord.Intents.default()
 intents.message_content = True
 
-bot = commands.Bot(intents=intents, command_prefix='!')
+bot = commands.Bot(intents=intents, command_prefix=config['commandPrefix'])
 
 
 @bot.event
@@ -30,6 +30,7 @@ async def on_ready():
 async def main():
     async with bot:
         await bot.load_extension('cogs.forward')
+        await bot.load_extension('cogs.evetime')
         await bot.start(config['botToken'])
 
 asyncio.run(main())
